@@ -1,12 +1,13 @@
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { PlayIcon } from '@heroicons/react/24/solid';
-// import { useNavigate } from "react-router-dom";
-// import { Movie } from "../types";
+import { useNavigate } from 'react-router-dom';
 
-const MovieCard = () => {
-  // const { thumbnailUrl, id, description, duration, title, genre } = movie;
+import type { Movie } from '../types';
 
-  // const navigate = useNavigate();
+const MovieCard = ({ movie }: { movie: Movie }) => {
+  const { thumbnailUrl, id, description, duration, title, genre } = movie;
+
+  const navigate = useNavigate();
 
   return (
     <div
@@ -14,7 +15,7 @@ const MovieCard = () => {
       // ref={lastElementRef}
     >
       <img
-        src='https://www.geo.tv/assets/uploads/updates/2017-03-06/l_133408_084627_updates.jpg'
+        src={thumbnailUrl}
         alt='Movie'
         draggable={false}
         className='
@@ -51,7 +52,7 @@ const MovieCard = () => {
       '
       >
         <img
-          src='https://www.geo.tv/assets/uploads/updates/2017-03-06/l_133408_084627_updates.jpg'
+          src={thumbnailUrl}
           alt='Movie'
           draggable={false}
           className='
@@ -81,7 +82,7 @@ const MovieCard = () => {
           <div className='flex flex-row items-center gap-3'>
             <button
               className='cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-white rounded-full flex justify-center items-center transition hover:bg-neutral-300'
-              // onClick={() => navigate(`/browse/watch/${id}`)}
+              onClick={() => navigate(`/browse/watch/${id}`)}
             >
               <PlayIcon className='text-black w-4 lg:w-6' />
             </button>
@@ -89,13 +90,13 @@ const MovieCard = () => {
               <ChevronDownIcon className='text-white group-hover/item:text-neutral-300 w-4 lg:w-6' />
             </div>
           </div>
-          <p className='text-white font-semibold mt-4 text-2xl'>Title</p>
-          <p className='text-gray-400'>description</p>
+          <p className='text-white font-semibold mt-4 text-2xl'>{title}</p>
+          <p className='text-gray-400'>{description}</p>
           <div className='flex flex-row mt-4 gap-2 items-center'>
-            <p className='text-white text-[10px] lg:text-sm'>duration</p>
+            <p className='text-white text-[10px] lg:text-sm'>{duration}</p>
           </div>
           <div className='flex flex-row items-center gap-2 mt-4 text-[8px] text-white lg:text-sm'>
-            <p>genre</p>
+            <p>{genre}</p>
           </div>
         </div>
       </div>
