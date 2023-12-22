@@ -1,8 +1,18 @@
+import BrowsePage from './pages/BrowsePage';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import PlanPage from './pages/PlanPage';
+import WatchPage from './pages/WatchPage';
+
 function App() {
   return (
-    <>
-      <h1 className='text-xl font-bold'>Hello world</h1>
-    </>
+    <div>
+      {/* <HomePage /> */}
+      {/* <LoginPage /> */}
+      {/* <PlanPage /> */}
+      {/* <BrowsePage /> */}
+      <WatchPage />
+    </div>
   );
 }
 
