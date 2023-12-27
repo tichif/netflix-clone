@@ -4,7 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 import type { Movie } from '../types';
 
-const MovieCard = ({ movie }: { movie: Movie }) => {
+const MovieCard = ({
+  movie,
+  lastElementRef,
+}: {
+  movie: Movie;
+  lastElementRef: ((node: HTMLDivElement) => void) | null;
+}) => {
   const { thumbnailUrl, id, description, duration, title, genre } = movie;
 
   const navigate = useNavigate();
@@ -12,7 +18,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
     <div
       className='group bg-zinc-900 col-span relative h-[12vw] w-[24%]'
-      // ref={lastElementRef}
+      ref={lastElementRef}
     >
       <img
         src={thumbnailUrl}
