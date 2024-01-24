@@ -1,10 +1,29 @@
-const Input = () => {
+import { useContext } from 'react';
+
+import { AuthFormContext, Inputs } from '../pages/LoginPage';
+
+interface Props {
+  id: string;
+  label: string;
+  type?: string;
+  name: keyof Inputs;
+  validate?: (text: string) => string | true;
+}
+
+const Input = ({ id, type, label, name, validate }: Props) => {
+  const { register, errors } = useContext(AuthFormContext);
+
+  if (!register) {
+    return null;
+  }
+
   return (
     <div className='relative'>
       <input
-        id=''
-        type='text'
+        id={id}
+        type={type}
         className='block rounded-md px-6 pt-6 pb-1 w-full text-md text-white bg-neutral-700 appearance-none focus:outline-none focus:ring-0 peer invalid:border-b-1'
+        {...register(name, { required: true, validate })}
       />
       <label
         className='absolute 
@@ -23,8 +42,14 @@ const Input = () => {
         peer-focus:scale-75
         peer-focus:-translate-y-3'
       >
-        Label
+        {label}
       </label>
+      {errors && errors[name]?.type === 'required' && (
+        <p className='text-red-600'>This field is required</p>
+      )}
+      {errors && errors[name]?.type === 'validate' && (
+        <p className='text-red-600'>{errors[name]?.message}</p>
+      )}
     </div>
   );
 };
