@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
+import useAuth from '../hooks/useAuth';
 
 const tabs = [
   'Home',
@@ -10,6 +13,12 @@ const tabs = [
 
 const Navbar = () => {
   const [showBackground, setShowBackground] = useState(false);
+
+  const { user, isLoading } = useSelector(
+    (state: RootState) => state.user.value
+  );
+
+  const { logout } = useAuth();
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -33,7 +42,7 @@ const Navbar = () => {
           alt='NetFlix'
           className='h-16'
         />
-        <div className='flex gap-7 ml-8'>
+        <div className='flex gap-7 ml-8 mr-auto'>
           {tabs.map((tab) => (
             <div
               className='text-white hover:text-gray-300 cursor-pointer'
@@ -43,6 +52,13 @@ const Navbar = () => {
             </div>
           ))}
         </div>
+        {user && !isLoading && (
+          <div>
+            <div className='text-white hover:text-gray-300 cursor-pointer ml-auto'>
+              <p onClick={logout}>Logout</p>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

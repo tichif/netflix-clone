@@ -5,9 +5,11 @@ import {
   UseFormRegister,
   FieldErrors,
 } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import Navbar from '../components/Navbar';
 import Input from '../components/Input';
+import useAuth from '../hooks/useAuth';
 
 enum Variant {
   SIGN_UP,
@@ -31,6 +33,7 @@ export const AuthFormContext = createContext<AuthFormContextType>({
 });
 const LoginPage = () => {
   const [variant, setVariant] = useState<Variant>(Variant.LOGIN);
+  const [authError, setAuthError] = useState('');
 
   const {
     register,
@@ -39,7 +42,33 @@ const LoginPage = () => {
     getValues,
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { signup, login } = useAuth();
+
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      if (variant === Variant.SIGN_UP) {
+        await signup(data);
+      } else {
+        await login(data);
+      }
+      setAuthError('');
+      navigate('/browse');
+    } catch (error: any) {
+      setAuthError(error.response.data.errors[0].msg);
+    }
+  };
+
+  const handleSwitch = () => {
+    if (variant === Variant.LOGIN) {
+      setVariant(Variant.SIGN_UP);
+    } else {
+      setVariant(Variant.LOGIN);
+    }
+
+    setAuthError('');
+  };
 
   return (
     <div className='relative bg-black h-screen w-screen bg-opacity-50'>
@@ -90,22 +119,18 @@ const LoginPage = () => {
                 className='bg-red-400 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700'
                 value='Submit'
               />
+
+              {authError && <p className='text-red-500'>{authError}</p>}
             </form>
           </AuthFormContext.Provider>
           {variant === Variant.LOGIN ? (
-            <p
-              className='text-neutral-500 mt-12'
-              onClick={() => setVariant(Variant.SIGN_UP)}
-            >
+            <p className='text-neutral-500 mt-12' onClick={handleSwitch}>
               <span className='text-white ml-1 hover:underline cursor-pointer'>
                 First time using Netflix ?
               </span>
             </p>
           ) : (
-            <p
-              className='text-neutral-500 mt-12'
-              onClick={() => setVariant(Variant.LOGIN)}
-            >
+            <p className='text-neutral-500 mt-12' onClick={handleSwitch}>
               <span className='text-white ml-1 hover:underline cursor-pointer'>
                 Already have an account ?
               </span>
